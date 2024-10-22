@@ -12,6 +12,8 @@
 namespace Tymon\JWTAuth\Support;
 
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Config;
 
 class Utils
 {
@@ -33,7 +35,9 @@ class Utils
      */
     public static function timestamp($timestamp)
     {
-        $timestamp = substr($timestamp, 0, 10);
+        if (!Cache::has('utils_timestamp_actuals')) {
+            $timestamp = substr($timestamp, 0, 10);
+        }
         return Carbon::createFromTimestampUTC($timestamp)->timezone('UTC');
     }
 
